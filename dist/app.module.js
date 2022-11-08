@@ -8,7 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const config_1 = require("@nestjs/config");
 const mongodb_setup_1 = require("./db/mongodb.setup");
 const users_module_1 = require("./modules/users/users.module");
 const auth_module_1 = require("./modules/auth/auth.module");
@@ -19,11 +18,20 @@ const validation_pipe_1 = require("./core/pipes/validation.pipe");
 const logging_interceptor_1 = require("./core/interceptor/logging.interceptor");
 const bills_module_1 = require("./modules/bills/bills.module");
 const assets_module_1 = require("./modules/assets/assets.module");
+const config_setup_1 = require("./config/config.setup");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot({ isGlobal: true, cache: true }), (0, mongodb_setup_1.setupMongodb)(), users_module_1.UsersModule, auth_module_1.AuthModule, classifies_module_1.ClassifiesModule, bills_module_1.BillsModule, assets_module_1.AssetsModule],
+        imports: [
+            (0, config_setup_1.setupConfig)(),
+            (0, mongodb_setup_1.setupMongodb)(),
+            users_module_1.UsersModule,
+            auth_module_1.AuthModule,
+            classifies_module_1.ClassifiesModule,
+            bills_module_1.BillsModule,
+            assets_module_1.AssetsModule
+        ],
         controllers: [],
         providers: [
             {

@@ -6,14 +6,18 @@ const mongoose_1 = require("@nestjs/mongoose");
 const setupMongodb = () => {
     return mongoose_1.MongooseModule.forRootAsync({
         imports: [config_1.ConfigModule],
-        useFactory: () => {
+        inject: [config_1.ConfigService],
+        useFactory: async (configService) => {
+            console.log("%c configService.get<string>(", "font-size:13px; background:pink; color:#bf2c9f;", configService.get("MONGO_URI"));
             const mongooseOptions = {
-                uri: "mongodb://yyh:mongodb@yyh28.top:27017",
-                dbName: "bill"
+                uri: configService.get("MONGO_URI"),
+                dbName: configService.get("MONGO_DB_NAME"),
+                user: configService.get("MONGO_USER"),
+                pass: configService.get("MONGO_PASS"),
+                authSource: configService.get("MONGO_AUTH_SOURCE")
             };
             return mongooseOptions;
-        },
-        inject: [config_1.ConfigService]
+        }
     });
 };
 exports.setupMongodb = setupMongodb;

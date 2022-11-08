@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
 import { setupMongodb } from "./db/mongodb.setup";
 import { UsersModule } from "./modules/users/users.module";
 import { AuthModule } from "./modules/auth/auth.module";
@@ -10,8 +9,18 @@ import { ValidationPipe } from "./core/pipes/validation.pipe";
 import { LoggingInterceptor } from "./core/interceptor/logging.interceptor";
 import { BillsModule } from "./modules/bills/bills.module";
 import { AssetsModule } from "./modules/assets/assets.module";
+import { setupConfig } from "./config/config.setup";
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true, cache: true }), setupMongodb(), UsersModule, AuthModule, ClassifiesModule, BillsModule, AssetsModule],
+  imports: [
+    // config
+    setupConfig(),
+    setupMongodb(),
+    UsersModule,
+    AuthModule,
+    ClassifiesModule,
+    BillsModule,
+    AssetsModule
+  ],
   controllers: [],
   providers: [
     {
