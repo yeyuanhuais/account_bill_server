@@ -1,5 +1,8 @@
 name: Deploy #action名称
-on: [push] #在推送的时候运行此action
+on: 
+  push:
+    branches:
+      - main #在推送的时候运行此action
 
 jobs:
   build_job:
