@@ -31,5 +31,6 @@ export class User {
   session_key: string;
   @Prop()
   avatar_url: string;
+  id: any;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

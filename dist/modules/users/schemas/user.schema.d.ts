@@ -38,5 +38,6 @@ export declare class User {
     openid: string;
     session_key: string;
     avatar_url: string;
+    id: any;
 }
 export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, any>, {}, {}, {}, {}, "type", User>;
