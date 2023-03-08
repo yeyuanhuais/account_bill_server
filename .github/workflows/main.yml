@@ -21,5 +21,21 @@ jobs:
           username: "deploy"
           password: ${{ secrets.DEPLOY_PASSWORD }}
           port: 22
-          source: "./*"
-          target: "/Runtime/nestjs/"
+          source: "./package.json"
+          target: "/Runtime/account_bill_server/"
+
+      - name: install
+        run: npm install
+
+      - name: build
+        run: npm run build
+
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: "yyh28.top"
+          username: "deploy"
+          password: ${{ secrets.DEPLOY_PASSWORD }}
+          port: 22
+          source: "./dist/*"
+          target: "/Runtime/account_bill_server/"
