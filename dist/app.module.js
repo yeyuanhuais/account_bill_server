@@ -9,16 +9,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongodb_setup_1 = require("./db/mongodb.setup");
-const users_module_1 = require("./modules/users/users.module");
-const auth_module_1 = require("./modules/auth/auth.module");
 const core_1 = require("@nestjs/core");
 const jwt_auth_guard_1 = require("./core/guards/jwt_auth.guard");
-const classifies_module_1 = require("./modules/classifies/classifies.module");
+const config_setup_1 = require("./config/config.setup");
 const validation_pipe_1 = require("./core/pipes/validation.pipe");
 const logging_interceptor_1 = require("./core/interceptor/logging.interceptor");
+const users_module_1 = require("./modules/users/users.module");
+const auth_module_1 = require("./modules/auth/auth.module");
+const classifies_module_1 = require("./modules/classifies/classifies.module");
 const bills_module_1 = require("./modules/bills/bills.module");
 const assets_module_1 = require("./modules/assets/assets.module");
-const config_setup_1 = require("./config/config.setup");
+const reminders_module_1 = require("./modules/reminders/reminders.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -30,7 +31,8 @@ AppModule = __decorate([
             auth_module_1.AuthModule,
             classifies_module_1.ClassifiesModule,
             bills_module_1.BillsModule,
-            assets_module_1.AssetsModule
+            assets_module_1.AssetsModule,
+            reminders_module_1.RemindersModule
         ],
         controllers: [],
         providers: [

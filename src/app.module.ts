@@ -1,15 +1,16 @@
 import { Module } from "@nestjs/common";
 import { setupMongodb } from "./db/mongodb.setup";
-import { UsersModule } from "./modules/users/users.module";
-import { AuthModule } from "./modules/auth/auth.module";
 import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core";
 import { JwtAuthGuard } from "./core/guards/jwt_auth.guard";
-import { ClassifiesModule } from "./modules/classifies/classifies.module";
+import { setupConfig } from "./config/config.setup";
 import { ValidationPipe } from "./core/pipes/validation.pipe";
 import { LoggingInterceptor } from "./core/interceptor/logging.interceptor";
+import { UsersModule } from "./modules/users/users.module";
+import { AuthModule } from "./modules/auth/auth.module";
+import { ClassifiesModule } from "./modules/classifies/classifies.module";
 import { BillsModule } from "./modules/bills/bills.module";
 import { AssetsModule } from "./modules/assets/assets.module";
-import { setupConfig } from "./config/config.setup";
+import { RemindersModule } from "./modules/reminders/reminders.module";
 @Module({
   imports: [
     // config
@@ -19,7 +20,8 @@ import { setupConfig } from "./config/config.setup";
     AuthModule,
     ClassifiesModule,
     BillsModule,
-    AssetsModule
+    AssetsModule,
+    RemindersModule
   ],
   controllers: [],
   providers: [

@@ -50,7 +50,7 @@ export class UsersController {
     type: UpdateUserDto
   })
   update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+    return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(":id")
@@ -89,11 +89,13 @@ export class UsersController {
     if (login_method === "weixin") {
       const result = await this.usersService.weixinLogin(code);
       const findUser = await this.usersService.findOne({ openid: result.openid });
+      console.log("%c findUser", "font-size:13px; background:pink; color:#bf2c9f;", findUser);
       if (!findUser) {
         const user = await this.usersService.wxRegister({ ...result, ...wxLoginUserDto });
         return this.authService.certificate(user);
       } else {
-        return this.authService.certificate(findUser);
+        const user = await this.usersService.update(findUser?.id.toString(), { ...result, ...wxLoginUserDto });
+        return this.authService.certificate(user || findUser);
       }
     }
     throw new CustomerException(1, "登录方式必须为微信");

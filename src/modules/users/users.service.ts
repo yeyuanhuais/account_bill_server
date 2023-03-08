@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import { CustomerException } from "src/core/exceptions/customer.exception";
 import { encryptPassword, makeSalt } from "src/utils/cryptogram";
 import { CreateUserDto } from "./dto/create_user.dto";
@@ -38,8 +38,9 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    const modifyUser = await this.usersModel.findByIdAndUpdate(id, updateUserDto);
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    console.log("%c updateUserDto", "font-size:13px; background:pink; color:#bf2c9f;", updateUserDto);
+    const modifyUser = await this.usersModel.findByIdAndUpdate(new mongoose.Types.ObjectId(id), updateUserDto);
     return modifyUser;
   }
 
@@ -109,4 +110,5 @@ export class UsersService {
     }
     return res.data;
   }
+
 }

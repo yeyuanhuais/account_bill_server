@@ -40,7 +40,7 @@ let UsersController = class UsersController {
         return this.usersService.findOneById(+id);
     }
     update(id, updateUserDto) {
-        return this.usersService.update(+id, updateUserDto);
+        return this.usersService.update(id, updateUserDto);
     }
     remove(id) {
         return this.usersService.remove(+id);
@@ -61,12 +61,14 @@ let UsersController = class UsersController {
         if (login_method === "weixin") {
             const result = await this.usersService.weixinLogin(code);
             const findUser = await this.usersService.findOne({ openid: result.openid });
+            console.log("%c findUser", "font-size:13px; background:pink; color:#bf2c9f;", findUser);
             if (!findUser) {
                 const user = await this.usersService.wxRegister(Object.assign(Object.assign({}, result), wxLoginUserDto));
                 return this.authService.certificate(user);
             }
             else {
-                return this.authService.certificate(findUser);
+                const user = await this.usersService.update(findUser === null || findUser === void 0 ? void 0 : findUser.id.toString(), Object.assign(Object.assign({}, result), wxLoginUserDto));
+                return this.authService.certificate(user || findUser);
             }
         }
         throw new customer_exception_1.CustomerException(1, "登录方式必须为微信");

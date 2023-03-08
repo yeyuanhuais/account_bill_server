@@ -7,7 +7,7 @@ export type UserDocument = User & Document;
 export class User {
   @Prop()
   account: string;
-  @Prop({ required: true })
+  @Prop()
   password: string;
   @Prop()
   phone: string;
