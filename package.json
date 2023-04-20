@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "pm2": "pm2 start --name account_bill_server dist/main.js --watch",
+    "pm2": "pm2 start dist/main.js PORT=3100 HOST=127.0.0.1 --name account_bill_server --watch",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
