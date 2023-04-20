@@ -15,8 +15,9 @@ export class WechartGPTController {
     type: MessageDto
   })
   @ApiOperation({ summary: "消息", description: "消息" })
-  create(@Body() messageDto: MessageDto) {
-    const response = this.wechartGPTService.messageChatGPT(messageDto);
+  async create(@Body() messageDto: MessageDto) {
+    const response = await this.wechartGPTService.messageChatGPT(messageDto);
+    console.log("%c response", "font-size:13px; background:pink; color:#bf2c9f;", response);
     return {
       ToUserName: messageDto.fromUserName,
       FromUserName: messageDto.toUserName,

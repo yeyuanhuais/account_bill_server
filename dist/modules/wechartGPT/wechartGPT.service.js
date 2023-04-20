@@ -12,6 +12,7 @@ const openai_1 = require("openai");
 let WechartGPTService = class WechartGPTService {
     async messageChatGPT(messageDto) {
         var _a, _b;
+        console.log("%c messageDto", "font-size:13px; background:pink; color:#bf2c9f;", messageDto);
         const configuration = new openai_1.Configuration({
             apiKey: "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"
         });
@@ -22,6 +23,7 @@ let WechartGPTService = class WechartGPTService {
             max_tokens: 1024,
             temperature: 0.1
         });
+        console.log("%c openai", "font-size:13px; background:pink; color:#bf2c9f;", response);
         return (((_b = (_a = response === null || response === void 0 ? void 0 : response.data) === null || _a === void 0 ? void 0 : _a.choices) === null || _b === void 0 ? void 0 : _b[0].text) || "AI 挂了").trim();
     }
 };

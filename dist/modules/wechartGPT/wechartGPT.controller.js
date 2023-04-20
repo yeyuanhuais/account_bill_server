@@ -22,8 +22,9 @@ let WechartGPTController = class WechartGPTController {
     constructor(wechartGPTService) {
         this.wechartGPTService = wechartGPTService;
     }
-    create(messageDto) {
-        const response = this.wechartGPTService.messageChatGPT(messageDto);
+    async create(messageDto) {
+        const response = await this.wechartGPTService.messageChatGPT(messageDto);
+        console.log("%c response", "font-size:13px; background:pink; color:#bf2c9f;", response);
         return {
             ToUserName: messageDto.fromUserName,
             FromUserName: messageDto.toUserName,
@@ -44,7 +45,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [message_1.MessageDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], WechartGPTController.prototype, "create", null);
 WechartGPTController = __decorate([
     (0, common_1.Controller)("wechartGPT"),

@@ -24,7 +24,7 @@ async function bootstrap() {
   // 全局注册拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
   await app.listen(3200, () => {
-    Logger.log(`API文档已生成,请访问: http://localhost:3100/api`, process.env.NODE_ENV);
+    Logger.log(`API文档已生成,请访问: http://localhost:3200/api`, process.env.NODE_ENV);
   });
 }
 bootstrap();

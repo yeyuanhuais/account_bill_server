@@ -73,7 +73,6 @@ let UsersService = class UsersService {
         return user;
     }
     async update(id, updateUserDto) {
-        console.log("%c updateUserDto", "font-size:13px; background:pink; color:#bf2c9f;", updateUserDto);
         const modifyUser = await this.usersModel.findByIdAndUpdate(new mongoose_2.default.Types.ObjectId(id), updateUserDto);
         return modifyUser;
     }

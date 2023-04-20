@@ -61,7 +61,6 @@ let UsersController = class UsersController {
         if (login_method === "weixin") {
             const result = await this.usersService.weixinLogin(code);
             const findUser = await this.usersService.findOne({ openid: result.openid });
-            console.log("%c findUser", "font-size:13px; background:pink; color:#bf2c9f;", findUser);
             if (!findUser) {
                 const user = await this.usersService.wxRegister(Object.assign(Object.assign({}, result), wxLoginUserDto));
                 return this.authService.certificate(user);
