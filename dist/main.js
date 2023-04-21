@@ -20,8 +20,8 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup("api", app, document);
     app.useGlobalFilters(new http_exception_filter_1.HttpExceptionFilter());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
-    await app.listen(3200, () => {
-        common_1.Logger.log(`API文档已生成,请访问: http://localhost:3200/api`, process.env.NODE_ENV);
+    await app.listen(3300, () => {
+        common_1.Logger.log(`API文档已生成,请访问: http://localhost:3300/api`, process.env.NODE_ENV);
     });
 }
 bootstrap();
