@@ -17,3 +17,4 @@ _logs
 .cache
 _cacache
 .history
+.env
