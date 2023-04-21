@@ -8,6 +8,7 @@ const setupMongodb = () => {
         imports: [config_1.ConfigModule],
         inject: [config_1.ConfigService],
         useFactory: async (configService) => {
+            console.log("%c configService.get<string>()", "font-size:13px; background:pink; color:#bf2c9f;", configService.get("MONGO_URI"));
             const mongooseOptions = {
                 uri: configService.get("MONGO_URI"),
                 dbName: configService.get("MONGO_DB_NAME"),
