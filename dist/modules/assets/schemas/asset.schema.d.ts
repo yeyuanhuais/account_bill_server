@@ -24,7 +24,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { Document } from "mongoose";
 import { ASSET_TYPE, SHOW, STATUS, TYPE } from "../enum";
-export declare type AssetDocument = Asset & Document;
+export type AssetDocument = Asset & Document;
 export declare class Asset {
     name: string;
     color: string;
@@ -38,4 +38,4 @@ export declare class Asset {
     status: STATUS;
     show: SHOW;
 }
-export declare const AssetSchema: import("mongoose").Schema<Asset, import("mongoose").Model<Asset, any, any, any, any>, {}, {}, {}, {}, "type", Asset>;
+export declare const AssetSchema: import("mongoose").Schema<Asset, import("mongoose").Model<Asset, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Asset>;

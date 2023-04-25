@@ -12,6 +12,7 @@ import { BillsModule } from "./modules/bills/bills.module";
 import { AssetsModule } from "./modules/assets/assets.module";
 import { RemindersModule } from "./modules/reminders/reminders.module";
 import { WechartGPTModule } from "./modules/wechartGPT/wechartGPT.module";
+import { WechatyModule } from "./modules/wechaty/wechaty.module";
 @Module({
   imports: [
     // config
@@ -23,7 +24,8 @@ import { WechartGPTModule } from "./modules/wechartGPT/wechartGPT.module";
     BillsModule,
     AssetsModule,
     RemindersModule,
-    WechartGPTModule
+    WechartGPTModule,
+    WechatyModule
   ],
   controllers: [],
   providers: [

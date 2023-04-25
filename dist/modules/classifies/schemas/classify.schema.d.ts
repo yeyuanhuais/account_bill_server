@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Document } from "mongoose";
-export declare type ClassifyDocument = Classify & Document;
+export type ClassifyDocument = Classify & Document;
 export declare class Classify {
     name: string;
     icon: string;
@@ -33,4 +33,4 @@ export declare class Classify {
     modify_time: string;
     status: number;
 }
-export declare const ClassifySchema: import("mongoose").Schema<Classify, import("mongoose").Model<Classify, any, any, any, any>, {}, {}, {}, {}, "type", Classify>;
+export declare const ClassifySchema: import("mongoose").Schema<Classify, import("mongoose").Model<Classify, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Classify>;

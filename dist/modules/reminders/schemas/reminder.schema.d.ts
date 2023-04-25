@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Document, Types } from "mongoose";
-export declare type ReminderDocument = Reminder & Document;
+export type ReminderDocument = Reminder & Document;
 export declare class Reminder {
     _id: Types.ObjectId;
     name: string;
@@ -37,4 +37,4 @@ export declare class Reminder {
     create_time: string;
     modify_time: string;
 }
-export declare const ReminderSchema: import("mongoose").Schema<Reminder, import("mongoose").Model<Reminder, any, any, any, any>, {}, {}, {}, {}, "type", Reminder>;
+export declare const ReminderSchema: import("mongoose").Schema<Reminder, import("mongoose").Model<Reminder, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Reminder>;

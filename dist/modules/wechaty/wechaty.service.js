@@ -6,29 +6,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.XMLMiddleware = void 0;
+exports.WeChatyService = void 0;
 const common_1 = require("@nestjs/common");
-const xml2js_1 = require("xml2js");
-let XMLMiddleware = class XMLMiddleware {
-    async use(req, next) {
-        const buffer = [];
-        req.on("data", chunk => {
-            buffer.push(chunk);
-        });
-        req.on("end", () => {
-            const msgXml = Buffer.concat(buffer).toString("utf-8");
-            (0, xml2js_1.parseString)(msgXml, (err, result) => {
-                if (err) {
-                    throw err;
-                }
-                req.body = result;
-                next();
-            });
-        });
-    }
+let WeChatyService = class WeChatyService {
 };
-XMLMiddleware = __decorate([
+WeChatyService = __decorate([
     (0, common_1.Injectable)()
-], XMLMiddleware);
-exports.XMLMiddleware = XMLMiddleware;
-//# sourceMappingURL=xml.middleware.js.map
+], WeChatyService);
+exports.WeChatyService = WeChatyService;
+//# sourceMappingURL=wechaty.service.js.map

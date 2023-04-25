@@ -23,7 +23,7 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 import { Document } from "mongoose";
-export declare type BillDocument = Bill & Document;
+export type BillDocument = Bill & Document;
 export declare class Bill {
     bill_value: string;
     icon_id: string;
@@ -35,4 +35,4 @@ export declare class Bill {
     modify_time: string;
     status: number;
 }
-export declare const BillSchema: import("mongoose").Schema<Bill, import("mongoose").Model<Bill, any, any, any, any>, {}, {}, {}, {}, "type", Bill>;
+export declare const BillSchema: import("mongoose").Schema<Bill, import("mongoose").Model<Bill, any, any, any, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, Bill>;

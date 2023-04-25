@@ -6,9 +6,7 @@ import { ConfigService } from "@nestjs/config";
 @Injectable()
 export class WechartGPTService {
   constructor(private configService: ConfigService) {}
-  async sendTextMsg(): Promise<any> {
-    return "AI 挂了";
-  }
+  
   async messageChatGPT(messageDto: MessageDto): Promise<any> {
     const configuration = new Configuration({
       // organization: "org-e9tSsKMBgW93fiGhmULf5OfF",

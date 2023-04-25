@@ -6,19 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WechartGPTModule = void 0;
+exports.WechatyModule = void 0;
 const common_1 = require("@nestjs/common");
-const wechartGPT_service_1 = require("./wechartGPT.service");
-const wechartGPT_controller_1 = require("./wechartGPT.controller");
-const wechaty_module_1 = require("../wechaty/wechaty.module");
-let WechartGPTModule = class WechartGPTModule {
+const wechaty_service_1 = require("./wechaty.service");
+const weChaty_controller_1 = require("./weChaty.controller");
+let WechatyModule = class WechatyModule {
 };
-WechartGPTModule = __decorate([
+WechatyModule = __decorate([
     (0, common_1.Module)({
-        imports: [wechaty_module_1.WechatyModule],
-        controllers: [wechartGPT_controller_1.WechartGPTController],
-        providers: [wechartGPT_service_1.WechartGPTService]
+        providers: [wechaty_service_1.WeChatyService],
+        exports: [wechaty_service_1.WeChatyService],
+        controllers: [weChaty_controller_1.WeChatyController],
     })
-], WechartGPTModule);
-exports.WechartGPTModule = WechartGPTModule;
-//# sourceMappingURL=wechartGPT.module.js.map
+], WechatyModule);
+exports.WechatyModule = WechatyModule;
+//# sourceMappingURL=wechaty.module.js.map

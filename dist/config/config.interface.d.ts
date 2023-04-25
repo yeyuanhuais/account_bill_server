@@ -1,4 +1,4 @@
-export declare type IEnv = {
+export type IEnv = {
     MONGO_URI: string;
     MONGO_DB_NAME: string;
     MONGO_USER: string;
@@ -6,4 +6,4 @@ export declare type IEnv = {
     MONGO_AUTH_SOURCE: string;
     CHATGPT_APIKEY: string;
 };
-export declare type IConfig = IEnv;
+export type IConfig = IEnv;

@@ -17,9 +17,6 @@ let WechartGPTService = class WechartGPTService {
     constructor(configService) {
         this.configService = configService;
     }
-    async sendTextMsg() {
-        return "AI 挂了";
-    }
     async messageChatGPT(messageDto) {
         var _a, _b;
         const configuration = new openai_1.Configuration({
