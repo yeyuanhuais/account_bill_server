@@ -22,9 +22,20 @@ let WechartGPTController = class WechartGPTController {
     constructor(wechartGPTService) {
         this.wechartGPTService = wechartGPTService;
     }
+    async postMsg(body, res) {
+        const xml = body.xml;
+        if (xml.MsgType.toLowerCase() === "text") {
+            const replyXml = await this.wechartGPTService.sendTextMsg();
+            if (xml.fromUserName == "www.16yun.cn") {
+                console.log("亿牛云代理");
+            }
+            console.log(replyXml);
+            res.type("application/xml");
+            res.end(replyXml);
+        }
+    }
     async create(messageDto) {
         const response = await this.wechartGPTService.messageChatGPT(messageDto);
-        console.log("%c response", "font-size:13px; background:pink; color:#bf2c9f;", response);
         return {
             ToUserName: messageDto.fromUserName,
             FromUserName: messageDto.toUserName,
@@ -34,6 +45,20 @@ let WechartGPTController = class WechartGPTController {
         };
     }
 };
+__decorate([
+    (0, common_1.Post)("callback"),
+    (0, public_decorator_1.Public)(),
+    (0, swagger_1.ApiBody)({
+        description: "消息",
+        type: message_1.MessageDto
+    }),
+    (0, swagger_1.ApiOperation)({ summary: "消息", description: "消息" }),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], WechartGPTController.prototype, "postMsg", null);
 __decorate([
     (0, common_1.Post)("message"),
     (0, public_decorator_1.Public)(),
