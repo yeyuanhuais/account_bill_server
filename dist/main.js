@@ -21,7 +21,7 @@ async function bootstrap() {
     app.useGlobalFilters(new http_exception_filter_1.HttpExceptionFilter());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
     await app.listen(3300, () => {
-        common_1.Logger.log(`API文档已生成,请访问: http://localhost:3300/api`, process.env.NODE_ENV);
+        common_1.Logger.log(`API文档已生成,请访问: http://localhost:3300/api`);
     });
 }
 bootstrap();
