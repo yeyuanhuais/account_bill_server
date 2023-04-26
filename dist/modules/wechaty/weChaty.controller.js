@@ -39,17 +39,22 @@ exports.WeChatyController = void 0;
 const common_1 = require("@nestjs/common");
 const public_decorator_1 = require("../../core/decorators/public.decorator");
 const crypto = __importStar(require("crypto"));
+const config_1 = require("@nestjs/config");
+const wechaty_service_1 = require("./wechaty.service");
 let WeChatyController = class WeChatyController {
+    constructor(weChatyService, configService) {
+        this.weChatyService = weChatyService;
+        this.configService = configService;
+    }
     async verify(req, res) {
         console.log("%c req", "font-size:13px; background:pink; color:#bf2c9f;", req);
         const { signature, timestamp, nonce, echostr } = req.query;
-        const token = "yeyuanhuais";
+        const token = this.configService.get("WECHATY_PUPPET_PADPLUS_TOKEN");
         const list = [token, timestamp, nonce].sort();
         const str = list.join("").toString().replace(/,/g, "");
         const sha1 = crypto.createHash("sha1");
         sha1.update(str, "utf-8");
         const result = sha1.digest("hex");
-        console.log("%c result", "font-size:13px; background:pink; color:#bf2c9f;", result);
         if (result === signature) {
             res.send(echostr);
         }
@@ -57,7 +62,27 @@ let WeChatyController = class WeChatyController {
             res.send("Failed");
         }
     }
-    async handleMessage() { }
+    async handleMessage(body) {
+        const xml = body.xml;
+        console.log("%c xml", "font-size:13px; background:pink; color:#bf2c9f;", xml);
+        const messageType = xml.MsgType[0];
+        switch (messageType) {
+            case "text":
+                const content = xml.Content[0];
+                const response = {
+                    xml: {
+                        ToUserName: xml.FromUserName[0],
+                        FromUserName: xml.ToUserName[0],
+                        CreateTime: new Date().getTime(),
+                        MsgType: "text",
+                        Content: `您发送的消息是：${content}`
+                    }
+                };
+                return response;
+            default:
+                return "";
+        }
+    }
 };
 __decorate([
     (0, common_1.Get)("incoming"),
@@ -71,12 +96,14 @@ __decorate([
 __decorate([
     (0, common_1.Post)("incoming"),
     (0, public_decorator_1.Public)(),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], WeChatyController.prototype, "handleMessage", null);
 WeChatyController = __decorate([
-    (0, common_1.Controller)("wechaty")
+    (0, common_1.Controller)("wechaty"),
+    __metadata("design:paramtypes", [wechaty_service_1.WeChatyService, config_1.ConfigService])
 ], WeChatyController);
 exports.WeChatyController = WeChatyController;
 //# sourceMappingURL=weChaty.controller.js.map
