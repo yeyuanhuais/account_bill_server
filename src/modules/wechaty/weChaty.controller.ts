@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
 import { Public } from "src/core/decorators/public.decorator";
 import { Request, Response } from "express";
 import * as crypto from "crypto";
+import * as xml2js from "xml2js";
 import { ConfigService } from "@nestjs/config";
 import { WeChatyService } from "./wechaty.service";
 
@@ -28,26 +29,32 @@ export class WeChatyController {
   }
   @Post("incoming")
   @Public()
-  async handleMessage(@Body() body: any): Promise<any> {
-    const xml = body.xml;
-    console.log("%c xml", "font-size:13px; background:pink; color:#bf2c9f;", xml);
-    const messageType = xml.MsgType[0];
+  async handleMessage(@Body() body: any, @Res() res: Response): Promise<any> {
+    const xml = await xml2js.parseStringPromise(body);
+    const message = xml.xml;
 
-    switch (messageType) {
+    // 判断消息类型
+    const msgType = message.MsgType[0];
+    switch (msgType) {
       case "text":
-        const content = xml.Content[0];
+        const content = message.Content[0];
         const response = {
           xml: {
-            ToUserName: xml.FromUserName[0],
-            FromUserName: xml.ToUserName[0],
+            ToUserName: message.FromUserName[0],
+            FromUserName: message.ToUserName[0],
             CreateTime: new Date().getTime(),
             MsgType: "text",
             Content: `您发送的消息是：${content}`
           }
         };
-        return response;
+        const xmlBuilder = new xml2js.Builder();
+        const xmlResponse = xmlBuilder.buildObject(response);
+        res.type("application/xml");
+        res.send(xmlResponse);
+        break;
       default:
-        return "";
+        res.send("");
+        break;
     }
   }
 }

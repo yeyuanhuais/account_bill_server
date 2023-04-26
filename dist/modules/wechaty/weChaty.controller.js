@@ -39,6 +39,7 @@ exports.WeChatyController = void 0;
 const common_1 = require("@nestjs/common");
 const public_decorator_1 = require("../../core/decorators/public.decorator");
 const crypto = __importStar(require("crypto"));
+const xml2js = __importStar(require("xml2js"));
 const config_1 = require("@nestjs/config");
 const wechaty_service_1 = require("./wechaty.service");
 let WeChatyController = class WeChatyController {
@@ -62,25 +63,30 @@ let WeChatyController = class WeChatyController {
             res.send("Failed");
         }
     }
-    async handleMessage(body) {
-        const xml = body.xml;
-        console.log("%c xml", "font-size:13px; background:pink; color:#bf2c9f;", xml);
-        const messageType = xml.MsgType[0];
-        switch (messageType) {
+    async handleMessage(body, res) {
+        const xml = await xml2js.parseStringPromise(body);
+        const message = xml.xml;
+        const msgType = message.MsgType[0];
+        switch (msgType) {
             case "text":
-                const content = xml.Content[0];
+                const content = message.Content[0];
                 const response = {
                     xml: {
-                        ToUserName: xml.FromUserName[0],
-                        FromUserName: xml.ToUserName[0],
+                        ToUserName: message.FromUserName[0],
+                        FromUserName: message.ToUserName[0],
                         CreateTime: new Date().getTime(),
                         MsgType: "text",
                         Content: `您发送的消息是：${content}`
                     }
                 };
-                return response;
+                const xmlBuilder = new xml2js.Builder();
+                const xmlResponse = xmlBuilder.buildObject(response);
+                res.type("application/xml");
+                res.send(xmlResponse);
+                break;
             default:
-                return "";
+                res.send("");
+                break;
         }
     }
 };
@@ -97,8 +103,9 @@ __decorate([
     (0, common_1.Post)("incoming"),
     (0, public_decorator_1.Public)(),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], WeChatyController.prototype, "handleMessage", null);
 WeChatyController = __decorate([

@@ -6,5 +6,5 @@ export declare class WeChatyController {
     private configService;
     constructor(weChatyService: WeChatyService, configService: ConfigService);
     verify(req: Request, res: Response): Promise<void>;
-    handleMessage(body: any): Promise<any>;
+    handleMessage(body: any, res: Response): Promise<any>;
 }
