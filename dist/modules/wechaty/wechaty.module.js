@@ -10,13 +10,17 @@ exports.WechatyModule = void 0;
 const common_1 = require("@nestjs/common");
 const wechaty_service_1 = require("./wechaty.service");
 const weChaty_controller_1 = require("./weChaty.controller");
+const xml_middleware_1 = require("../../core/middleware/xml.middleware");
 let WechatyModule = class WechatyModule {
+    configure(consumer) {
+        consumer.apply(xml_middleware_1.XmlMiddleware).forRoutes("/v1/wechaty");
+    }
 };
 WechatyModule = __decorate([
     (0, common_1.Module)({
         providers: [wechaty_service_1.WeChatyService],
         exports: [wechaty_service_1.WeChatyService],
-        controllers: [weChaty_controller_1.WeChatyController],
+        controllers: [weChaty_controller_1.WeChatyController]
     })
 ], WechatyModule);
 exports.WechatyModule = WechatyModule;

@@ -12,7 +12,7 @@ export class WeChatyController {
   @Get("incoming")
   @Public()
   async verify(@Req() req: Request, @Res() res: Response) {
-    console.log("%c req", "font-size:13px; background:pink; color:#bf2c9f;", req);
+    console.log("%c 校验微信公众号接口参数", "font-size:13px; background:pink; color:#bf2c9f;", req.query);
     const { signature, timestamp, nonce, echostr } = req.query;
     const token = this.configService.get<string>("WECHATY_PUPPET_PADPLUS_TOKEN");
     const list = [token, timestamp, nonce].sort();
@@ -26,11 +26,12 @@ export class WeChatyController {
       res.send("Failed");
     }
   }
+
   @Post("incoming")
   @Public()
   async handleMessage(@Req() req: Request, @Body() body: any, @Res() res: Response): Promise<any> {
     console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body, req.body);
-    const xml = await xml2js.parseStringPromise(body);
+    const { xml } = body;
     console.log("%c xml", "font-size:13px; background:pink; color:#bf2c9f;", xml);
     const message = xml.xml;
 
