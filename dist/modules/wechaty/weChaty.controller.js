@@ -45,10 +45,11 @@ let WeChatyController = class WeChatyController {
         const { signature, timestamp, nonce, echostr } = req.query;
         const token = "yeyuanhuais";
         const list = [token, timestamp, nonce].sort();
-        const str = list.join("");
+        const str = list.join("").toString().replace(/,/g, "");
         const sha1 = crypto.createHash("sha1");
-        sha1.update(str);
+        sha1.update(str, "utf-8");
         const result = sha1.digest("hex");
+        console.log("%c result", "font-size:13px; background:pink; color:#bf2c9f;", result);
         if (result === signature) {
             res.send(echostr);
         }
@@ -60,6 +61,7 @@ let WeChatyController = class WeChatyController {
 };
 __decorate([
     (0, common_1.Get)("incoming"),
+    (0, public_decorator_1.Public)(),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
