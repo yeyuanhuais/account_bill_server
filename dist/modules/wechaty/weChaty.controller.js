@@ -62,7 +62,7 @@ let WeChatyController = class WeChatyController {
         }
     }
     async handleMessage(body, res) {
-        console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body.xml);
+        console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body);
         const xml = await xml2js.parseStringPromise(body);
         console.log("%c xml", "font-size:13px; background:pink; color:#bf2c9f;", xml);
         const message = xml.xml;
