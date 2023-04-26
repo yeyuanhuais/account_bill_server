@@ -41,10 +41,8 @@ const public_decorator_1 = require("../../core/decorators/public.decorator");
 const crypto = __importStar(require("crypto"));
 const xml2js = __importStar(require("xml2js"));
 const config_1 = require("@nestjs/config");
-const wechaty_service_1 = require("./wechaty.service");
 let WeChatyController = class WeChatyController {
-    constructor(weChatyService, configService) {
-        this.weChatyService = weChatyService;
+    constructor(configService) {
         this.configService = configService;
     }
     async verify(req, res) {
@@ -110,7 +108,7 @@ __decorate([
 ], WeChatyController.prototype, "handleMessage", null);
 WeChatyController = __decorate([
     (0, common_1.Controller)("wechaty"),
-    __metadata("design:paramtypes", [wechaty_service_1.WeChatyService, config_1.ConfigService])
+    __metadata("design:paramtypes", [config_1.ConfigService])
 ], WeChatyController);
 exports.WeChatyController = WeChatyController;
 //# sourceMappingURL=weChaty.controller.js.map

@@ -4,11 +4,10 @@ import { Request, Response } from "express";
 import * as crypto from "crypto";
 import * as xml2js from "xml2js";
 import { ConfigService } from "@nestjs/config";
-import { WeChatyService } from "./wechaty.service";
 
 @Controller("wechaty")
 export class WeChatyController {
-  constructor(private readonly weChatyService: WeChatyService, private configService: ConfigService) {}
+  constructor(private configService: ConfigService) {}
 
   @Get("incoming")
   @Public()
