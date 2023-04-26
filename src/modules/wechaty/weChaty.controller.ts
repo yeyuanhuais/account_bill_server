@@ -1,35 +1,30 @@
-import { Controller, Post, Req, Res } from "@nestjs/common";
-import { Request, Response } from "express";
+import { Controller, Get, Post, Req, Res } from "@nestjs/common";
 import { Public } from "src/core/decorators/public.decorator";
-import * as xml2js from "xml2js";
+// import { WeChatyService } from "./wechaty.service";
+import { Request, Response } from "express";
+import * as crypto from "crypto";
 
-@Controller("message")
+@Controller("wechaty")
 export class WeChatyController {
+  // constructor(private readonly weChatyService: WeChatyService) {}
+
+  @Get("incoming")
+  async verify(@Req() req: Request, @Res() res: Response) {
+    console.log("%c req", "font-size:13px; background:pink; color:#bf2c9f;", req);
+    const { signature, timestamp, nonce, echostr } = req.query;
+    const token = "yeyuanhuais";
+    const list = [token, timestamp, nonce].sort();
+    const str = list.join("");
+    const sha1 = crypto.createHash("sha1");
+    sha1.update(str);
+    const result = sha1.digest("hex");
+    if (result === signature) {
+      res.send(echostr);
+    } else {
+      res.send("Failed");
+    }
+  }
   @Post("incoming")
   @Public()
-  async handleMessage(@Req() req: Request, @Res() res: Response) {
-    let xml = "";
-    req.on("data", chunk => {
-      xml += chunk;
-    });
-
-    req.on("end", () => {
-      xml2js.parseString(xml, async (_err: any, result: { xml: any }) => {
-        const message = result.xml;
-        const content = message.Content[0];
-        const fromUserName = message.FromUserName[0];
-        const toUserName = message.ToUserName[0];
-        const createTime = message.CreateTime[0];
-        const replyContent = `你发送的消息是：${content}`;
-        const replyMsg = `<xml>
-                          <ToUserName><![CDATA[${fromUserName}]]></ToUserName>
-                          <FromUserName><![CDATA[${toUserName}]]></FromUserName>
-                          <CreateTime>${createTime}</CreateTime>
-                          <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA[${replyContent}]]></Content>
-                        </xml>`;
-        res.send(replyMsg);
-      });
-    });
-  }
+  async handleMessage() {}
 }

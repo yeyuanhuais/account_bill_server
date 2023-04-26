@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
 export declare class WeChatyController {
-    handleMessage(req: Request, res: Response): Promise<void>;
+    verify(req: Request, res: Response): Promise<void>;
+    handleMessage(): Promise<void>;
 }

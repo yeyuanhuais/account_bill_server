@@ -38,44 +38,43 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WeChatyController = void 0;
 const common_1 = require("@nestjs/common");
 const public_decorator_1 = require("../../core/decorators/public.decorator");
-const xml2js = __importStar(require("xml2js"));
+const crypto = __importStar(require("crypto"));
 let WeChatyController = class WeChatyController {
-    async handleMessage(req, res) {
-        let xml = "";
-        req.on("data", chunk => {
-            xml += chunk;
-        });
-        req.on("end", () => {
-            xml2js.parseString(xml, async (_err, result) => {
-                const message = result.xml;
-                const content = message.Content[0];
-                const fromUserName = message.FromUserName[0];
-                const toUserName = message.ToUserName[0];
-                const createTime = message.CreateTime[0];
-                const replyContent = `你发送的消息是：${content}`;
-                const replyMsg = `<xml>
-                          <ToUserName><![CDATA[${fromUserName}]]></ToUserName>
-                          <FromUserName><![CDATA[${toUserName}]]></FromUserName>
-                          <CreateTime>${createTime}</CreateTime>
-                          <MsgType><![CDATA[text]]></MsgType>
-                          <Content><![CDATA[${replyContent}]]></Content>
-                        </xml>`;
-                res.send(replyMsg);
-            });
-        });
+    async verify(req, res) {
+        console.log("%c req", "font-size:13px; background:pink; color:#bf2c9f;", req);
+        const { signature, timestamp, nonce, echostr } = req.query;
+        const token = "yeyuanhuais";
+        const list = [token, timestamp, nonce].sort();
+        const str = list.join("");
+        const sha1 = crypto.createHash("sha1");
+        sha1.update(str);
+        const result = sha1.digest("hex");
+        if (result === signature) {
+            res.send(echostr);
+        }
+        else {
+            res.send("Failed");
+        }
     }
+    async handleMessage() { }
 };
 __decorate([
-    (0, common_1.Post)("incoming"),
-    (0, public_decorator_1.Public)(),
+    (0, common_1.Get)("incoming"),
     __param(0, (0, common_1.Req)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
+], WeChatyController.prototype, "verify", null);
+__decorate([
+    (0, common_1.Post)("incoming"),
+    (0, public_decorator_1.Public)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
 ], WeChatyController.prototype, "handleMessage", null);
 WeChatyController = __decorate([
-    (0, common_1.Controller)("message")
+    (0, common_1.Controller)("wechaty")
 ], WeChatyController);
 exports.WeChatyController = WeChatyController;
 //# sourceMappingURL=weChaty.controller.js.map
