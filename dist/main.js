@@ -6,6 +6,8 @@ const swagger_1 = require("@nestjs/swagger");
 const http_exception_filter_1 = require("./core/filter/http_exception.filter");
 const transform_interceptor_1 = require("./core/interceptor/transform.interceptor");
 const common_1 = require("@nestjs/common");
+const bodyParser = require("body-parser");
+require("body-parser-xml")(bodyParser);
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.setGlobalPrefix("/v1");
@@ -20,6 +22,11 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup("api", app, document);
     app.useGlobalFilters(new http_exception_filter_1.HttpExceptionFilter());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
+    app.use(bodyParser.xml({
+        xmlParseOptions: {
+            explicitArray: false
+        }
+    }));
     await app.listen(3300, () => {
         common_1.Logger.log(`API文档已生成,请访问: http://localhost:3300/api`);
     });

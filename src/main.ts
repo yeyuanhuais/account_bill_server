@@ -4,6 +4,10 @@ import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import { HttpExceptionFilter } from "./core/filter/http_exception.filter";
 import { TransformInterceptor } from "./core/interceptor/transform.interceptor";
 import { Logger } from "@nestjs/common";
+
+const bodyParser = require("body-parser");
+require("body-parser-xml")(bodyParser);
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // 请求统一请求头
@@ -23,6 +27,15 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   // 全局注册拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
+
+  app.use(
+    bodyParser.xml({
+      xmlParseOptions: {
+        explicitArray: false // 始终返回数组。默认情况下只有数组元素数量大于 1 是才返回数组。
+      }
+    })
+  );
+
   await app.listen(3300, () => {
     Logger.log(`API文档已生成,请访问: http://localhost:3300/api`);
   });

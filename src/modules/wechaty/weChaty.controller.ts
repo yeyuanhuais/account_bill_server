@@ -29,7 +29,7 @@ export class WeChatyController {
 
   @Post("incoming")
   @Public()
-  async handleMessage(@Req() req: Request, @Body() body: any, @Res() res: Response): Promise<any> {
+  async handleMessage(@Req() req: Request, @Body("xml") body: any, @Res() res: Response): Promise<any> {
     console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body, req.body);
     const { xml } = body;
     console.log("%c xml", "font-size:13px; background:pink; color:#bf2c9f;", xml);
