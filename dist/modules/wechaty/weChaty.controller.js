@@ -61,8 +61,8 @@ let WeChatyController = class WeChatyController {
             res.send("Failed");
         }
     }
-    async handleMessage(body, res) {
-        console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body);
+    async handleMessage(req, body, res) {
+        console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body, req);
         const xml = await xml2js.parseStringPromise(body);
         console.log("%c xml", "font-size:13px; background:pink; color:#bf2c9f;", xml);
         const message = xml.xml;
@@ -102,10 +102,11 @@ __decorate([
 __decorate([
     (0, common_1.Post)("incoming"),
     (0, public_decorator_1.Public)(),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Res)()),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, Object, Object]),
     __metadata("design:returntype", Promise)
 ], WeChatyController.prototype, "handleMessage", null);
 WeChatyController = __decorate([
