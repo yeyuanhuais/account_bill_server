@@ -63,17 +63,14 @@ let WeChatyController = class WeChatyController {
     }
     async handleMessage(req, body, res) {
         console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body, req.body);
-        const { xml } = body;
-        console.log("%c xml", "font-size:13px; background:pink; color:#bf2c9f;", xml);
-        const message = xml.xml;
-        const msgType = message.MsgType[0];
+        const msgType = body.MsgType;
         switch (msgType) {
             case "text":
-                const content = message.Content[0];
+                const content = body.Content;
                 const response = {
                     xml: {
-                        ToUserName: message.FromUserName[0],
-                        FromUserName: message.ToUserName[0],
+                        ToUserName: body.FromUserName,
+                        FromUserName: body.ToUserName,
                         CreateTime: new Date().getTime(),
                         MsgType: "text",
                         Content: `您发送的消息是：${content}`

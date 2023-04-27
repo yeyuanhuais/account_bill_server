@@ -5,7 +5,9 @@ import { HttpExceptionFilter } from "./core/filter/http_exception.filter";
 import { TransformInterceptor } from "./core/interceptor/transform.interceptor";
 import { Logger } from "@nestjs/common";
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const bodyParser = require("body-parser");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("body-parser-xml")(bodyParser);
 
 async function bootstrap() {

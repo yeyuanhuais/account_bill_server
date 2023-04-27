@@ -12,7 +12,7 @@ const xml2js_1 = require("xml2js");
 let XmlMiddleware = class XmlMiddleware {
     async use(req, _res, next) {
         const buffer = [];
-        console.log("%c buffer", "font-size:13px; background:pink; color:#bf2c9f;", buffer);
+        console.log("%c buffer", "font-size:13px; background:pink; color:#bf2c9f;", buffer, req.headers["content-type"]);
         req.on("data", chunk => {
             buffer.push(chunk);
         });
