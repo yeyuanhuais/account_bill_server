@@ -28,7 +28,7 @@ export class WeChatyController {
 
   @Post("incoming")
   @Public()
-  async handleMessage(@Req() req: Request, @Body("xml") body: any, @Res() res: Response): Promise<any> {
+  async handleMessage(@Body("xml") body: any, @Res() res: Response): Promise<any> {
     // 判断消息类型
     const msgType = body.MsgType;
     switch (msgType) {

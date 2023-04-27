@@ -60,7 +60,7 @@ let WeChatyController = class WeChatyController {
             res.send("Failed");
         }
     }
-    async handleMessage(req, body, res) {
+    async handleMessage(body, res) {
         const msgType = body.MsgType;
         switch (msgType) {
             case "text":
@@ -95,11 +95,10 @@ __decorate([
 __decorate([
     (0, common_1.Post)("incoming"),
     (0, public_decorator_1.Public)(),
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Body)("xml")),
-    __param(2, (0, common_1.Res)()),
+    __param(0, (0, common_1.Body)("xml")),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], WeChatyController.prototype, "handleMessage", null);
 WeChatyController = __decorate([

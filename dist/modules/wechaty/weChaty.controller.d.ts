@@ -4,5 +4,5 @@ export declare class WeChatyController {
     private configService;
     constructor(configService: ConfigService);
     verify(req: Request, res: Response): Promise<void>;
-    handleMessage(req: Request, body: any, res: Response): Promise<any>;
+    handleMessage(body: any, res: Response): Promise<any>;
 }
