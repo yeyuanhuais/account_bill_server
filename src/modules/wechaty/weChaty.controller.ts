@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
 import { Public } from "src/core/decorators/public.decorator";
 import { Request, Response } from "express";
 import * as crypto from "crypto";
-import * as xml2js from "xml2js";
 import { ConfigService } from "@nestjs/config";
 import { create } from "xmlbuilder2";
 
