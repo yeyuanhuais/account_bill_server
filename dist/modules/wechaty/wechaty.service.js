@@ -9,6 +9,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WeChatyService = void 0;
 const common_1 = require("@nestjs/common");
 let WeChatyService = class WeChatyService {
+    generateTextReply(toUser, fromUser, content) {
+        const createTime = new Date().getTime();
+        return `<xml>
+      <ToUserName><![CDATA[${fromUser}]]></ToUserName>
+      <FromUserName><![CDATA[${toUser}]]></FromUserName>
+      <CreateTime>${createTime}</CreateTime>
+      <MsgType><![CDATA[text]]></MsgType>
+      <Content><![CDATA[您发送的消息是：${content}]]></Content>
+    </xml>`;
+    }
 };
 WeChatyService = __decorate([
     (0, common_1.Injectable)()

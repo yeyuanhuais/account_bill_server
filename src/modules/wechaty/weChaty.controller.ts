@@ -3,11 +3,11 @@ import { Public } from "src/core/decorators/public.decorator";
 import { Request, Response } from "express";
 import * as crypto from "crypto";
 import { ConfigService } from "@nestjs/config";
-import { create } from "xmlbuilder2";
+import { WeChatyService } from "./wechaty.service";
 
 @Controller("wechaty")
 export class WeChatyController {
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService, private weChatyService: WeChatyService) {}
 
   @Get("incoming")
   @Public()
@@ -33,16 +33,17 @@ export class WeChatyController {
     const msgType = body.MsgType;
     switch (msgType) {
       case "text":
-        const content = body.Content;
-        const response = create({
-          xml: {
-            ToUserName: body.FromUserName,
-            FromUserName: body.ToUserName,
-            CreateTime: new Date().getTime(),
-            MsgType: "text",
-            Content: `您发送的消息是：${content}`
-          }
-        }).end({ prettyPrint: true });
+        // const content = body.Content;
+        // const response = create({
+        //   xml: {
+        //     ToUserName: body.FromUserName,
+        //     FromUserName: body.ToUserName,
+        //     CreateTime: new Date().getTime(),
+        //     MsgType: "text",
+        //     Content: `您发送的消息是：${content}`
+        //   }
+        // }).end({ prettyPrint: true });
+        const response = this.weChatyService.generateTextReply(body.ToUserName, body.FromUserName, body.Content);
         res.type("application/xml");
         res.send(response);
         break;

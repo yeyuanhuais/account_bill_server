@@ -40,10 +40,11 @@ const common_1 = require("@nestjs/common");
 const public_decorator_1 = require("../../core/decorators/public.decorator");
 const crypto = __importStar(require("crypto"));
 const config_1 = require("@nestjs/config");
-const xmlbuilder2_1 = require("xmlbuilder2");
+const wechaty_service_1 = require("./wechaty.service");
 let WeChatyController = class WeChatyController {
-    constructor(configService) {
+    constructor(configService, weChatyService) {
         this.configService = configService;
+        this.weChatyService = weChatyService;
     }
     async verify(req, res) {
         const { signature, timestamp, nonce, echostr } = req.query;
@@ -64,16 +65,7 @@ let WeChatyController = class WeChatyController {
         const msgType = body.MsgType;
         switch (msgType) {
             case "text":
-                const content = body.Content;
-                const response = (0, xmlbuilder2_1.create)({
-                    xml: {
-                        ToUserName: body.FromUserName,
-                        FromUserName: body.ToUserName,
-                        CreateTime: new Date().getTime(),
-                        MsgType: "text",
-                        Content: `您发送的消息是：${content}`
-                    }
-                }).end({ prettyPrint: true });
+                const response = this.weChatyService.generateTextReply(body.ToUserName, body.FromUserName, body.Content);
                 res.type("application/xml");
                 res.send(response);
                 break;
@@ -103,7 +95,7 @@ __decorate([
 ], WeChatyController.prototype, "handleMessage", null);
 WeChatyController = __decorate([
     (0, common_1.Controller)("wechaty"),
-    __metadata("design:paramtypes", [config_1.ConfigService])
+    __metadata("design:paramtypes", [config_1.ConfigService, wechaty_service_1.WeChatyService])
 ], WeChatyController);
 exports.WeChatyController = WeChatyController;
 //# sourceMappingURL=weChaty.controller.js.map
