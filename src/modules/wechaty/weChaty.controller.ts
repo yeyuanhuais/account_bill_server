@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import * as crypto from "crypto";
 import * as xml2js from "xml2js";
 import { ConfigService } from "@nestjs/config";
+import { create } from "xmlbuilder2";
 
 @Controller("wechaty")
 export class WeChatyController {
@@ -12,7 +13,6 @@ export class WeChatyController {
   @Get("incoming")
   @Public()
   async verify(@Req() req: Request, @Res() res: Response) {
-    console.log("%c 校验微信公众号接口参数", "font-size:13px; background:pink; color:#bf2c9f;", req.query);
     const { signature, timestamp, nonce, echostr } = req.query;
     const token = this.configService.get<string>("WECHATY_PUPPET_PADPLUS_TOKEN");
     const list = [token, timestamp, nonce].sort();
@@ -30,14 +30,12 @@ export class WeChatyController {
   @Post("incoming")
   @Public()
   async handleMessage(@Req() req: Request, @Body("xml") body: any, @Res() res: Response): Promise<any> {
-    console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body, req.body);
-
     // 判断消息类型
     const msgType = body.MsgType;
     switch (msgType) {
       case "text":
         const content = body.Content;
-        const response = {
+        const response = create({
           xml: {
             ToUserName: body.FromUserName,
             FromUserName: body.ToUserName,
@@ -45,11 +43,9 @@ export class WeChatyController {
             MsgType: "text",
             Content: `您发送的消息是：${content}`
           }
-        };
-        const xmlBuilder = new xml2js.Builder();
-        const xmlResponse = xmlBuilder.buildObject(response);
+        }).end({ prettyPrint: true });
         res.type("application/xml");
-        res.send(xmlResponse);
+        res.send(response);
         break;
       default:
         res.send("");
