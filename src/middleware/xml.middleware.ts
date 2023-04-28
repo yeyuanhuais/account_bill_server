@@ -20,6 +20,8 @@ const parseXml = (xml: string): any => {
 @Injectable()
 export class XMLMiddleware implements NestMiddleware {
   use(req: Request, _res: any, next: () => void) {
+      console.log("%c req.headers[]", "font-size:13px; background:pink; color:#bf2c9f;", req.headers["content-type"]);
+    /* ======== 方法一 ======== */
     if (req.method === "POST" && req.headers["content-type"] === "application/xml") {
       let xmlData = "";
       req.on("data", (chunk: any) => {
@@ -40,7 +42,7 @@ export class XMLMiddleware implements NestMiddleware {
     } else {
       next();
     }
-
+    /* ======== 方法二 ======== */
     // const buffer: any[] = [];
     // req.on("data", data => {
     //   buffer.push(data);
