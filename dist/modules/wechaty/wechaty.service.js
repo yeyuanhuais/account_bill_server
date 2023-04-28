@@ -8,9 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WeChatyService = void 0;
 const common_1 = require("@nestjs/common");
+const xmlbuilder2_1 = require("xmlbuilder2");
 let WeChatyService = class WeChatyService {
     generateTextReply(toUser, fromUser, content) {
         const createTime = new Date().getTime();
+        return (0, xmlbuilder2_1.create)({
+            xml: {
+                ToUserName: fromUser,
+                FromUserName: toUser,
+                CreateTime: createTime,
+                MsgType: "text",
+                Content: `服务开发中，您发送的消息是：${content}`
+            }
+        }).end({ prettyPrint: true });
         return `<xml>
       <ToUserName><![CDATA[${fromUser}]]></ToUserName>
       <FromUserName><![CDATA[${toUser}]]></FromUserName>

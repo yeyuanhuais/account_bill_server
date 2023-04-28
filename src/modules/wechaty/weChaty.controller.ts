@@ -33,19 +33,9 @@ export class WeChatyController {
     console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body);
     // 判断消息类型
     const { xml } = body;
-    const msgType = xml.MsgType;
+    const msgType = xml.MsgType.toLowerCase();
     switch (msgType) {
       case "text":
-        // const content = body.Content;
-        // const response = create({
-        //   xml: {
-        //     ToUserName: body.FromUserName,
-        //     FromUserName: body.ToUserName,
-        //     CreateTime: new Date().getTime(),
-        //     MsgType: "text",
-        //     Content: `您发送的消息是：${content}`
-        //   }
-        // }).end({ prettyPrint: true });
         const response = this.weChatyService.generateTextReply(xml.ToUserName, xml.FromUserName, xml.Content);
         res.type("application/xml");
         res.send(response);
