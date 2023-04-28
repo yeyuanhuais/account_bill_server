@@ -20,17 +20,36 @@ const parseXml = (xml: string): any => {
 @Injectable()
 export class XMLMiddleware implements NestMiddleware {
   use(req: Request, _res: any, next: () => void) {
-    console.log("%c req", "font-size:13px; background:pink; color:#bf2c9f;", req);
-    const buffer: any[] = [];
-    req.on("data", data => {
-      buffer.push(data);
-    });
-    req.on("end", async () => {
-      console.log(req.query);
-      const msgXml = Buffer.concat(buffer).toString("utf-8");
-      const xmlData = await parseXml(msgXml);
-      req.body = xmlData;
+    if (req.method === "POST" && req.headers["content-type"] === "application/xml") {
+      let xmlData = "";
+      req.on("data", (chunk: any) => {
+        xmlData += chunk;
+      });
+      req.on("end", () => {
+        const parser = new xml2js.Parser({ explicitArray: false });
+        parser.parseString(xmlData, (err, result) => {
+          if (err) {
+            console.log(err);
+            next();
+          } else {
+            req.body = result;
+            next();
+          }
+        });
+      });
+    } else {
       next();
-    });
+    }
+
+    // const buffer: any[] = [];
+    // req.on("data", data => {
+    //   buffer.push(data);
+    // });
+    // req.on("end", async () => {
+    //   const msgXml = Buffer.concat(buffer).toString("utf-8");
+    //   const xmlData = await parseXml(msgXml);
+    //   req.body = xmlData;
+    //   next();
+    // });
   }
 }
