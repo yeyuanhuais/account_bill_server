@@ -6,22 +6,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WechatyModule = void 0;
+exports.XmlMiddleware = void 0;
 const common_1 = require("@nestjs/common");
-const wechaty_service_1 = require("./wechaty.service");
-const weChaty_controller_1 = require("./weChaty.controller");
-const xml_middleware_1 = require("../../middleware/xml.middleware");
-let WechatyModule = class WechatyModule {
-    configure(consumer) {
-        consumer.apply(xml_middleware_1.XMLMiddleware).forRoutes("wechaty");
+let XmlMiddleware = class XmlMiddleware {
+    use(req, res, next) {
+        next();
     }
 };
-WechatyModule = __decorate([
-    (0, common_1.Module)({
-        providers: [wechaty_service_1.WeChatyService],
-        exports: [wechaty_service_1.WeChatyService],
-        controllers: [weChaty_controller_1.WeChatyController]
-    })
-], WechatyModule);
-exports.WechatyModule = WechatyModule;
-//# sourceMappingURL=wechaty.module.js.map
+XmlMiddleware = __decorate([
+    (0, common_1.Injectable)()
+], XmlMiddleware);
+exports.XmlMiddleware = XmlMiddleware;
+//# sourceMappingURL=xml.middleware.js.map

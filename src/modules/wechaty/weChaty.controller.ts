@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res } from "@nestjs/common";
 import { Public } from "src/core/decorators/public.decorator";
 import { Request, Response } from "express";
 import * as crypto from "crypto";
@@ -28,9 +28,12 @@ export class WeChatyController {
 
   @Post("incoming")
   @Public()
-  async handleMessage(@Body("xml") body: any, @Res() res: Response): Promise<any> {
+  @HttpCode(HttpStatus.OK)
+  async handleMessage(@Body() body: any, @Res() res: Response): Promise<any> {
+    console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body);
     // 判断消息类型
-    const msgType = body.MsgType;
+    const { xml } = body;
+    const msgType = xml.MsgType;
     switch (msgType) {
       case "text":
         // const content = body.Content;
@@ -43,13 +46,9 @@ export class WeChatyController {
         //     Content: `您发送的消息是：${content}`
         //   }
         // }).end({ prettyPrint: true });
-        const response = this.weChatyService.generateTextReply(body.ToUserName, body.FromUserName, body.Content);
+        const response = this.weChatyService.generateTextReply(xml.ToUserName, xml.FromUserName, xml.Content);
         res.type("application/xml");
-        res.send({
-          status: 200,
-          description: "ok",
-          result: response
-        });
+        res.send(response);
         break;
       default:
         res.send("");

@@ -62,16 +62,14 @@ let WeChatyController = class WeChatyController {
         }
     }
     async handleMessage(body, res) {
-        const msgType = body.MsgType;
+        console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body);
+        const { xml } = body;
+        const msgType = xml.MsgType;
         switch (msgType) {
             case "text":
-                const response = this.weChatyService.generateTextReply(body.ToUserName, body.FromUserName, body.Content);
+                const response = this.weChatyService.generateTextReply(xml.ToUserName, xml.FromUserName, xml.Content);
                 res.type("application/xml");
-                res.send({
-                    status: 200,
-                    description: "ok",
-                    result: response
-                });
+                res.send(response);
                 break;
             default:
                 res.send("");
@@ -91,7 +89,8 @@ __decorate([
 __decorate([
     (0, common_1.Post)("incoming"),
     (0, public_decorator_1.Public)(),
-    __param(0, (0, common_1.Body)("xml")),
+    (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),

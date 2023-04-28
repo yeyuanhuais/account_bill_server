@@ -22,11 +22,6 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup("api", app, document);
     app.useGlobalFilters(new http_exception_filter_1.HttpExceptionFilter());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
-    app.use(bodyParser.xml({
-        xmlParseOptions: {
-            explicitArray: false
-        }
-    }));
     await app.listen(3300, () => {
         common_1.Logger.log(`API文档已生成,请访问: http://localhost:3300/api`);
     });

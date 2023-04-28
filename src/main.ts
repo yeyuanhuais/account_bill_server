@@ -30,13 +30,13 @@ async function bootstrap() {
   // 全局注册拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  app.use(
-    bodyParser.xml({
-      xmlParseOptions: {
-        explicitArray: false // 始终返回数组。默认情况下只有数组元素数量大于 1 是才返回数组。
-      }
-    })
-  );
+  // app.use(
+  //   bodyParser.xml({
+  //     xmlParseOptions: {
+  //       explicitArray: false // 始终返回数组。默认情况下只有数组元素数量大于 1 是才返回数组。
+  //     }
+  //   })
+  // );
 
   await app.listen(3300, () => {
     Logger.log(`API文档已生成,请访问: http://localhost:3300/api`);
