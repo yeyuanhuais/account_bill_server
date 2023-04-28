@@ -45,7 +45,11 @@ export class WeChatyController {
         // }).end({ prettyPrint: true });
         const response = this.weChatyService.generateTextReply(body.ToUserName, body.FromUserName, body.Content);
         res.type("application/xml");
-        res.send(response);
+        res.send({
+          status: 200,
+          description: "ok",
+          result: response
+        });
         break;
       default:
         res.send("");
