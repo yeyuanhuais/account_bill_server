@@ -30,7 +30,6 @@ export class WeChatyController {
   @Public()
   @HttpCode(HttpStatus.OK)
   async handleMessage(@Body() body: any, @Res() res: Response): Promise<any> {
-    console.log("%c body", "font-size:13px; background:pink; color:#bf2c9f;", body);
     // 判断消息类型
     const { xml } = body;
     const msgType = xml.MsgType.toLowerCase();

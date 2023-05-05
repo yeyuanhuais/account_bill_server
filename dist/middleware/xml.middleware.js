@@ -48,8 +48,7 @@ const parseXml = (xml) => {
 };
 let XMLMiddleware = class XMLMiddleware {
     use(req, _res, next) {
-        console.log("%c req.headers[]", "font-size:13px; background:pink; color:#bf2c9f;", req.headers["content-type"]);
-        if ((req.method === "POST" && req.headers["content-type"] === "application/xml") || "text/xml") {
+        if (req.method === "POST" && (req.headers["content-type"] === "application/xml" || "text/xml")) {
             let xmlData = "";
             req.on("data", (chunk) => {
                 xmlData += chunk;
@@ -58,7 +57,6 @@ let XMLMiddleware = class XMLMiddleware {
                 const parser = new xml2js.Parser({ explicitArray: false });
                 parser.parseString(xmlData, (err, result) => {
                     if (err) {
-                        console.log(err);
                         next();
                     }
                     else {
