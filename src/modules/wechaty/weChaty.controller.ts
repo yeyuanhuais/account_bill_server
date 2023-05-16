@@ -32,6 +32,7 @@ export class WeChatyController {
   async handleMessage(@Body() body: any, @Res() res: Response): Promise<any> {
     // 判断消息类型
     const { xml } = body;
+    console.log("%c xml", "font-size:13px; background:pink; color:#bf2c9f;", xml);
     const msgType = xml.MsgType.toLowerCase();
     switch (msgType) {
       case "text":
