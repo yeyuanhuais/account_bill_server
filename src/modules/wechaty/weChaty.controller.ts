@@ -40,6 +40,17 @@ export class WeChatyController {
         res.type("application/xml");
         res.send(response);
         break;
+      case "event":
+        switch (xml.Event) {
+          case "unsubscribe": //取消关注
+            break;
+          case "subscribe": //关注
+            const response = this.weChatyService.generateFocusOnReply(xml.ToUserName, xml.FromUserName);
+            res.type("application/xml");
+            res.send(response);
+            break;
+        }
+        break;
       default:
         res.send("");
         break;
