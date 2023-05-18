@@ -29,7 +29,7 @@ import { WeChatModule } from "./modules/weChat/weChat.module";
   providers: [
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard // token校验
+      useClass: JwtAuthGuard // token校 验 
     },
     {
       provide: APP_PIPE,
