@@ -1,17 +1,17 @@
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
-import { WeChatService } from "./weChat.service";
-import { WeChatController } from "./weChat.controller";
+import { WeChatMessageService } from "./weChatMessage.service";
+import { WeChatMessageController } from "./weChatMessage.controller";
 import { XMLMiddleware } from "@/middleware/xml.middleware";
 import { MongooseModule } from "@nestjs/mongoose";
 import { WeChatMessageSchema } from "./schemas/weChatMessage.schema";
 // 
 @Module({
   imports: [MongooseModule.forFeature([{ name: "WeChatMessages", schema: WeChatMessageSchema }])],
-  providers: [WeChatService],
-  exports: [WeChatService],
-  controllers: [WeChatController]
+  providers: [WeChatMessageService],
+  exports: [WeChatMessageService],
+  controllers: [WeChatMessageController]
 })
-export class WeChatModule implements NestModule {
+export class WeChatMessageModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(XMLMiddleware).forRoutes("wechaty");
   }

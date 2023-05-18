@@ -3,13 +3,13 @@ import { Public } from "src/core/decorators/public.decorator";
 import { Request, Response } from "express";
 import * as crypto from "crypto";
 import { ConfigService } from "@nestjs/config";
-import { WeChatService } from "./weChat.service";
+import { WeChatMessageService } from "./weChatMessage.service";
 interface UNSUPPORTED_MESSAGE_TYPES_ENUM {
   [key: string]: string; // 字段扩展声 明
 }
 @Controller("wechaty")
-export class WeChatController {
-  constructor(private configService: ConfigService, private weChatService: WeChatService) {}
+export class WeChatMessageController {
+  constructor(private configService: ConfigService, private weChatService: WeChatMessageService) {}
 
   UNSUPPORTED_MESSAGE_TYPES: UNSUPPORTED_MESSAGE_TYPES_ENUM = {
     image: "暂不支持图片消息",

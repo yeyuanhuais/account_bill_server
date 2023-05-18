@@ -10,7 +10,7 @@ import { CustomerException } from "@/core/exceptions/customer.exception";
 import sha1 from "sha1";
 
 @Injectable()
-export class WeChatService {
+export class WeChatMessageService {
   constructor(@InjectModel("WeChatMessages") private readonly weChatMessageModel: Model<WeChatMessageDocument>, private configService: ConfigService) {}
 
   OPENAI_MODEL = "gpt-3.5-turbo"; // 使用的 AI 模型

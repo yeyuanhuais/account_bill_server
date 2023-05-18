@@ -11,7 +11,7 @@ import { ClassifiesModule } from "./modules/classifies/classifies.module";
 import { BillsModule } from "./modules/bills/bills.module";
 import { AssetsModule } from "./modules/assets/assets.module";
 import { RemindersModule } from "./modules/reminders/reminders.module";
-import { WeChatModule } from "./modules/weChat/weChat.module";
+import { WeChatMessageModule } from "./modules/weChatMessage/weChatMessage.module";
 @Module({
   imports: [
     // config
@@ -23,7 +23,7 @@ import { WeChatModule } from "./modules/weChat/weChat.module";
     BillsModule,
     AssetsModule,
     RemindersModule,
-    WeChatModule
+    WeChatMessageModule
   ],
   controllers: [],
   providers: [
