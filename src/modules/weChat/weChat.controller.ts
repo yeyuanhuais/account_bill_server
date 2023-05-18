@@ -3,7 +3,7 @@ import { Public } from "src/core/decorators/public.decorator";
 import { Request, Response } from "express";
 import * as crypto from "crypto";
 import { ConfigService } from "@nestjs/config";
-import { WeChatService } from "./wechat.service";
+import { WeChatService } from "./weChat.service";
 interface UNSUPPORTED_MESSAGE_TYPES_ENUM {
   [key: string]: string; // 字段扩展声明
 }
