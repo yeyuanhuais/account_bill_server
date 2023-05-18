@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
-import { WeChatService } from "./wechat.service";
+import { WeChatService } from "./weChat.service";
 import { WeChatController } from "./weChat.controller";
 import { XMLMiddleware } from "@/middleware/xml.middleware";
 import { MongooseModule } from "@nestjs/mongoose";
