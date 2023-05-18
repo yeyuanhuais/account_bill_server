@@ -39,7 +39,12 @@ export declare class WeChatService {
     }): Promise<any>;
     checkEvent(payload: any): Promise<boolean>;
     findOne(query: object): Promise<any>;
-    createData(createDto: any): Promise<any>;
+    createData(createDto: any): Promise<(WeChatMessage & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }) | null>;
+    update(updateDto: any): Promise<(WeChatMessage & import("mongoose").Document<any, any, any> & {
+        _id: import("mongoose").Types.ObjectId;
+    }) | null>;
     findAll(query: object): Promise<(WeChatMessage & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
     })[]>;

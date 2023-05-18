@@ -97,7 +97,7 @@ let WeChatService = class WeChatService {
                 "Content-Type": "application/json"
             },
             model: this.OPENAI_MODEL,
-            prompt: "你好",
+            prompt: prompt,
             max_tokens: this.OPENAI_MAX_TOKEN,
             temperature: 0,
             timeout: 50000
@@ -126,7 +126,7 @@ let WeChatService = class WeChatService {
         if (content === "1") {
             const lastMessage = await this.findOne({ fromUser: fromUser });
             if (lastMessage) {
-                return `${lastMessage.content}\n------------\n${lastMessage.answer}`;
+                return `提问：${lastMessage.content}\n------------\n回答：${lastMessage.answer}`;
             }
             return this.NO_MESSAGE;
         }
@@ -159,10 +159,14 @@ let WeChatService = class WeChatService {
     async createData(createDto) {
         const findObj = await this.findOne({ eventId: createDto.eventId });
         if (findObj) {
-            return findObj;
+            return this.update(createDto);
         }
         const createObj = new this.weChatMessageModel(Object.assign({}, createDto));
         return createObj.save();
+    }
+    async update(updateDto) {
+        const modifyBill = await this.weChatMessageModel.findOneAndUpdate({ eventId: updateDto.eventId }, Object.assign({}, updateDto));
+        return modifyBill;
     }
     async findAll(query) {
         const allList = await this.weChatMessageModel.find(query).exec();

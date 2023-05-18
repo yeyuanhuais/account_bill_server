@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, UpdateQuery } from "mongoose";
 import { Message } from "wechaty";
 import { create } from "xmlbuilder2";
 import { WeChatMessage, WeChatMessageDocument } from "./schemas/weChatMessage.schema";
@@ -99,7 +99,7 @@ export class WeChatService {
         "Content-Type": "application/json"
       },
       model: this.OPENAI_MODEL,
-      prompt: "你好",
+      prompt: prompt,
       max_tokens: this.OPENAI_MAX_TOKEN,
       temperature: 0,
       timeout: 50000
@@ -132,7 +132,7 @@ export class WeChatService {
     if (content === "1") {
       const lastMessage = await this.findOne({ fromUser: fromUser });
       if (lastMessage) {
-        return `${lastMessage.content}\n------------\n${lastMessage.answer}`;
+        return `提问：${lastMessage.content}\n------------\n回答：${lastMessage.answer}`;
       }
 
       return this.NO_MESSAGE;
@@ -146,7 +146,7 @@ export class WeChatService {
     // OpenAI 回复内容
     const prompt = await this.buildOpenAIPrompt(fromUser, content);
     const { error, answer } = await this.getOpenAIReply(prompt);
-    console.log("%c  error, answer ", "font-size:13px; background:pink; color:#bf2c9f;",  error, answer );
+    console.log("%c  error, answer ", "font-size:13px; background:pink; color:#bf2c9f;", error, answer);
     if (error) {
       return error;
     }
@@ -180,10 +180,14 @@ export class WeChatService {
     const findObj = await this.findOne({ eventId: createDto.eventId });
     if (findObj) {
       // throw new CustomerException(1, "已存在");
-      return findObj;
+      return this.update(createDto);
     }
     const createObj = new this.weChatMessageModel({ ...createDto });
     return createObj.save();
+  }
+  async update(updateDto: any) {
+    const modifyBill = await this.weChatMessageModel.findOneAndUpdate({ eventId: updateDto.eventId }, { ...updateDto });
+    return modifyBill;
   }
 
   async findAll(query: object) {
