@@ -5,7 +5,7 @@ import * as crypto from "crypto";
 import { ConfigService } from "@nestjs/config";
 import { WeChatService } from "./weChat.service";
 interface UNSUPPORTED_MESSAGE_TYPES_ENUM {
-  [key: string]: string; // 字段扩展声明
+  [key: string]: string; // 字段扩展声 明
 }
 @Controller("wechaty")
 export class WeChatController {
