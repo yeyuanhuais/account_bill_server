@@ -202,7 +202,7 @@ export class WeChatMessageService {
       createTime: msg.CreateTime
     };
     // 修复请求响应超时问题：如果 5 秒内 AI 没有回复，则返回等待消息
-    const responseText = await Promise.race([this.replyText(newMessage), this.sleep(60000.0).then(() => this.WAIT_MESSAGE)]);
+    const responseText = await Promise.race([this.replyText(newMessage), this.sleep(4500.0).then(() => this.WAIT_MESSAGE)]);
     return this.toTextXML(msg.ToUserName, msg.FromUserName, `服务开发中，您发送的消息是：${responseText}`);
     // return `<xml>
     //   <ToUserName><![CDATA[${msg.FromUserName}]]></ToUserName>
