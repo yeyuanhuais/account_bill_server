@@ -1,12 +1,12 @@
 import { Model } from "mongoose";
 import { WeChatMessage, WeChatMessageDocument } from "./schemas/weChatMessage.schema";
 import { ConfigService } from "@nestjs/config";
-export declare class WeChatyService {
+export declare class WeChatService {
     private readonly weChatMessageModel;
     private configService;
     constructor(weChatMessageModel: Model<WeChatMessageDocument>, configService: ConfigService);
     OPENAI_MODEL: string;
-    OPENAI_MAX_TOKEN: string | number;
+    OPENAI_MAX_TOKEN: number;
     LIMIT_HISTORY_MESSAGES: number;
     CONVERSATION_MAX_AGE: number;
     ADJACENT_MESSAGE_MAX_INTERVAL: number;
@@ -20,7 +20,7 @@ export declare class WeChatyService {
         fromUser: string;
         content: string;
     }): Promise<string>;
-    buildOpenAIPrompt(fromUser: any, question: any): Promise<{
+    buildOpenAIPrompt(fromUser: any, question: any): Promise<false | {
         role: string;
         content: any;
     }[]>;
@@ -35,12 +35,20 @@ export declare class WeChatyService {
         eventId: string;
         content: string;
         fromUser: string;
+        createTime: string;
     }): Promise<any>;
     checkEvent(payload: any): Promise<boolean>;
     findOne(query: object): Promise<any>;
-    create(createDto: any): Promise<WeChatMessage & import("mongoose").Document<any, any, any> & {
+    createData(createDto: any): Promise<any>;
+    findAll(query: object): Promise<(WeChatMessage & import("mongoose").Document<any, any, any> & {
         _id: import("mongoose").Types.ObjectId;
-    }>;
-    generateTextReply(toUser: string, fromUser: string, content: string, msgId: string): Promise<string>;
+    })[]>;
+    generateTextReply(msg: {
+        ToUserName: string;
+        FromUserName: string;
+        Content: string;
+        MsgId: string;
+        CreateTime: string;
+    }): Promise<string>;
     generateFocusOnReply(toUser: string, fromUser: string): string;
 }

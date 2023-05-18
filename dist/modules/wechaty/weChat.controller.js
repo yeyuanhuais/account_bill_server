@@ -35,13 +35,13 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WeChatyController = void 0;
+exports.WeChatController = void 0;
 const common_1 = require("@nestjs/common");
 const public_decorator_1 = require("../../core/decorators/public.decorator");
 const crypto = __importStar(require("crypto"));
 const config_1 = require("@nestjs/config");
 const wechat_service_1 = require("./wechat.service");
-let WeChatyController = class WeChatyController {
+let WeChatController = class WeChatController {
     constructor(configService, weChatService) {
         this.configService = configService;
         this.weChatService = weChatService;
@@ -114,7 +114,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], WeChatyController.prototype, "verify", null);
+], WeChatController.prototype, "verify", null);
 __decorate([
     (0, common_1.Post)("incoming"),
     (0, public_decorator_1.Public)(),
@@ -124,10 +124,10 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], WeChatyController.prototype, "handleMessage", null);
-WeChatyController = __decorate([
+], WeChatController.prototype, "handleMessage", null);
+WeChatController = __decorate([
     (0, common_1.Controller)("wechaty"),
     __metadata("design:paramtypes", [config_1.ConfigService, wechat_service_1.WeChatService])
-], WeChatyController);
-exports.WeChatyController = WeChatyController;
-//# sourceMappingURL=weChaty.controller.js.map
+], WeChatController);
+exports.WeChatController = WeChatController;
+//# sourceMappingURL=weChat.controller.js.map

@@ -1,7 +1,7 @@
 import { Model } from "mongoose";
 import { WeChatMessage, WeChatMessageDocument } from "./schemas/weChatMessage.schema";
 import { ConfigService } from "@nestjs/config";
-export declare class WeChatyService {
+export declare class WeChatService {
     private readonly weChatMessageModel;
     private configService;
     constructor(weChatMessageModel: Model<WeChatMessageDocument>, configService: ConfigService);

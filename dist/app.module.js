@@ -20,8 +20,7 @@ const classifies_module_1 = require("./modules/classifies/classifies.module");
 const bills_module_1 = require("./modules/bills/bills.module");
 const assets_module_1 = require("./modules/assets/assets.module");
 const reminders_module_1 = require("./modules/reminders/reminders.module");
-const wechartGPT_module_1 = require("./modules/wechartGPT/wechartGPT.module");
-const wechaty_module_1 = require("./modules/wechaty/wechaty.module");
+const weChat_module_1 = require("./modules/weChat/weChat.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -35,8 +34,7 @@ AppModule = __decorate([
             bills_module_1.BillsModule,
             assets_module_1.AssetsModule,
             reminders_module_1.RemindersModule,
-            wechartGPT_module_1.WechartGPTModule,
-            wechaty_module_1.WechatyModule
+            weChat_module_1.WeChatModule
         ],
         controllers: [],
         providers: [

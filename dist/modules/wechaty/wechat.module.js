@@ -6,25 +6,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WechatyModule = void 0;
+exports.WeChatModule = void 0;
 const common_1 = require("@nestjs/common");
-const wechaty_service_1 = require("./wechaty.service");
-const weChaty_controller_1 = require("./weChaty.controller");
+const wechat_service_1 = require("./wechat.service");
+const weChat_controller_1 = require("./weChat.controller");
 const xml_middleware_1 = require("../../middleware/xml.middleware");
 const mongoose_1 = require("@nestjs/mongoose");
 const weChatMessage_schema_1 = require("./schemas/weChatMessage.schema");
-let WechatyModule = class WechatyModule {
+let WeChatModule = class WeChatModule {
     configure(consumer) {
         consumer.apply(xml_middleware_1.XMLMiddleware).forRoutes("wechaty");
     }
 };
-WechatyModule = __decorate([
+WeChatModule = __decorate([
     (0, common_1.Module)({
         imports: [mongoose_1.MongooseModule.forFeature([{ name: "WeChatMessages", schema: weChatMessage_schema_1.WeChatMessageSchema }])],
-        providers: [wechaty_service_1.WeChatyService],
-        exports: [wechaty_service_1.WeChatyService],
-        controllers: [weChaty_controller_1.WeChatyController]
+        providers: [wechat_service_1.WeChatService],
+        exports: [wechat_service_1.WeChatService],
+        controllers: [weChat_controller_1.WeChatController]
     })
-], WechatyModule);
-exports.WechatyModule = WechatyModule;
-//# sourceMappingURL=wechaty.module.js.map
+], WeChatModule);
+exports.WeChatModule = WeChatModule;
+//# sourceMappingURL=wechat.module.js.map

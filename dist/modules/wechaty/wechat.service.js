@@ -15,7 +15,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WeChatyService = void 0;
+exports.WeChatService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
@@ -23,7 +23,7 @@ const xmlbuilder2_1 = require("xmlbuilder2");
 const config_1 = require("@nestjs/config");
 const axios_1 = __importDefault(require("axios"));
 const customer_exception_1 = require("../../core/exceptions/customer.exception");
-let WeChatyService = class WeChatyService {
+let WeChatService = class WeChatService {
     constructor(weChatMessageModel, configService) {
         this.weChatMessageModel = weChatMessageModel;
         this.configService = configService;
@@ -188,10 +188,10 @@ let WeChatyService = class WeChatyService {
     `);
     }
 };
-WeChatyService = __decorate([
+WeChatService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)("WeChatMessages")),
     __metadata("design:paramtypes", [mongoose_2.Model, config_1.ConfigService])
-], WeChatyService);
-exports.WeChatyService = WeChatyService;
-//# sourceMappingURL=wechaty.service.js.map
+], WeChatService);
+exports.WeChatService = WeChatService;
+//# sourceMappingURL=wechat.service.js.map

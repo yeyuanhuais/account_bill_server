@@ -15,20 +15,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WeChatyService = void 0;
+exports.WeChatService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const xmlbuilder2_1 = require("xmlbuilder2");
 const config_1 = require("@nestjs/config");
 const axios_1 = __importDefault(require("axios"));
-const customer_exception_1 = require("../../core/exceptions/customer.exception");
-let WeChatyService = class WeChatyService {
+let WeChatService = class WeChatService {
     constructor(weChatMessageModel, configService) {
         this.weChatMessageModel = weChatMessageModel;
         this.configService = configService;
-        this.OPENAI_MODEL = process.env.MODEL || "gpt-3.5-turbo";
-        this.OPENAI_MAX_TOKEN = process.env.MAX_TOKEN || 1024;
+        this.OPENAI_MODEL = "gpt-3.5-turbo";
+        this.OPENAI_MAX_TOKEN = 120;
         this.LIMIT_HISTORY_MESSAGES = 50;
         this.CONVERSATION_MAX_AGE = 60 * 60 * 1000;
         this.ADJACENT_MESSAGE_MAX_INTERVAL = 10 * 60 * 1000;
@@ -69,28 +68,26 @@ let WeChatyService = class WeChatyService {
     async buildOpenAIPrompt(fromUser, question) {
         const prompt = [];
         const now = new Date();
-        const historyMessages = await this.findOne({ fromUser: fromUser });
-        console.log("%c historyMessages", "font-size:13px; background:pink; color:#bf2c9f;", historyMessages);
+        const historyMessages = await this.findAll({ fromUser: fromUser });
         let lastMessageTime = now;
         let tokenSize = 0;
+        if (!historyMessages) {
+            return false;
+        }
         for (const message of historyMessages) {
-            const timeSinceLastMessage = lastMessageTime ? lastMessageTime - message.createdAt : 0;
+            const timeSinceLastMessage = lastMessageTime ? lastMessageTime - parseInt(message.createTime) : 0;
             if (tokenSize > this.OPENAI_MAX_TOKEN || timeSinceLastMessage > this.ADJACENT_MESSAGE_MAX_INTERVAL) {
                 break;
             }
             prompt.unshift({ role: "assistant", content: message.answer });
-            prompt.unshift({ role: "user", content: message.question });
+            prompt.unshift({ role: "user", content: message.content });
             tokenSize += message.token;
-            lastMessageTime = message.createdAt;
+            lastMessageTime = message.createTime;
         }
         prompt.push({ role: "user", content: question });
         return prompt;
     }
     async getOpenAIReply(prompt) {
-        const data = JSON.stringify({
-            model: this.OPENAI_MODEL,
-            messages: prompt
-        });
         const config = {
             method: "post",
             maxBodyLength: Infinity,
@@ -99,12 +96,15 @@ let WeChatyService = class WeChatyService {
                 Authorization: `Bearer ${this.configService.get("CHATGPT_APIKEY")}`,
                 "Content-Type": "application/json"
             },
-            data: data,
+            model: this.OPENAI_MODEL,
+            prompt: "你好",
+            max_tokens: this.OPENAI_MAX_TOKEN,
+            temperature: 0,
             timeout: 50000
         };
         try {
             const response = await (0, axios_1.default)(config);
-            console.debug(`[OpenAI response] ${response.data}`);
+            console.log("%c response", "font-size:13px; background:pink; color:#bf2c9f;", response);
             if (response.status === 429) {
                 return {
                     error: "问题太多了，我有点眩晕，请稍后再试"
@@ -115,7 +115,7 @@ let WeChatyService = class WeChatyService {
             };
         }
         catch (e) {
-            console.error(e.response.data);
+            console.log("%c e", "font-size:13px; background:pink; color:#bf2c9f;", e);
             return {
                 error: "问题太难了 出错了. (uДu〃)."
             };
@@ -135,45 +135,48 @@ let WeChatyService = class WeChatyService {
         }
         const prompt = await this.buildOpenAIPrompt(fromUser, content);
         const { error, answer } = await this.getOpenAIReply(prompt);
-        console.debug(`[OpenAI reply] fromUser: ${fromUser}; prompt: ${prompt}; question: ${content}; answer: ${answer}`);
+        console.log("%c  error, answer ", "font-size:13px; background:pink; color:#bf2c9f;", error, answer);
         if (error) {
-            console.error(`fromUser: ${fromUser}; question: ${content}; error: ${error}`);
             return error;
         }
         const token = (content === null || content === void 0 ? void 0 : content.length) + answer.length;
-        const result = await this.create(Object.assign({ answer, token }, message));
-        console.debug(`[save message] result: ${result}`);
+        const result = await this.createData(Object.assign({ answer, token }, message));
         return answer;
     }
     async checkEvent(payload) {
         const eventId = payload.MsgId;
         const count = await this.findOne({ eventId: eventId });
-        if ((count === null || count === void 0 ? void 0 : count.length) != 0) {
+        if (count) {
             return true;
         }
-        await this.create({ eventId: eventId, fromUser: payload.FromUserName, content: payload.Content });
+        await this.createData({ eventId: eventId, fromUser: payload.FromUserName, content: payload.Content, createTime: payload.CreateTime });
         return false;
     }
     async findOne(query) {
-        const bill = await this.weChatMessageModel.findOne(query);
-        return bill;
+        const oneObj = await this.weChatMessageModel.findOne(query);
+        return oneObj;
     }
-    async create(createDto) {
-        const createObj = await this.findOne({ eventId: createDto.eventId });
-        if (createObj) {
-            throw new customer_exception_1.CustomerException(1, "已存在");
+    async createData(createDto) {
+        const findObj = await this.findOne({ eventId: createDto.eventId });
+        if (findObj) {
+            return findObj;
         }
-        const create = new this.weChatMessageModel(Object.assign({}, createDto));
-        return create.save();
+        const createObj = new this.weChatMessageModel(Object.assign({}, createDto));
+        return createObj.save();
     }
-    async generateTextReply(toUser, fromUser, content, msgId) {
+    async findAll(query) {
+        const allList = await this.weChatMessageModel.find(query).exec();
+        return allList;
+    }
+    async generateTextReply(msg) {
         const newMessage = {
-            eventId: msgId,
-            content: content.trim(),
-            fromUser: fromUser
+            eventId: msg.MsgId,
+            content: msg.Content.trim(),
+            fromUser: msg.FromUserName,
+            createTime: msg.CreateTime
         };
         const responseText = await Promise.race([this.replyText(newMessage), this.sleep(4000.0).then(() => this.WAIT_MESSAGE)]);
-        return this.toTextXML(toUser, fromUser, `服务开发中，您发送的消息是：${responseText}`);
+        return this.toTextXML(msg.ToUserName, msg.FromUserName, `服务开发中，您发送的消息是：${responseText}`);
     }
     generateFocusOnReply(toUser, fromUser) {
         return this.toTextXML(toUser, fromUser, `
@@ -188,10 +191,10 @@ let WeChatyService = class WeChatyService {
     `);
     }
 };
-WeChatyService = __decorate([
+WeChatService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, mongoose_1.InjectModel)("WeChatMessages")),
     __metadata("design:paramtypes", [mongoose_2.Model, config_1.ConfigService])
-], WeChatyService);
-exports.WeChatyService = WeChatyService;
-//# sourceMappingURL=wechaty.service.js.map
+], WeChatService);
+exports.WeChatService = WeChatService;
+//# sourceMappingURL=wechat.service.js.map

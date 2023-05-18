@@ -10,12 +10,12 @@ exports.WechartGPTModule = void 0;
 const common_1 = require("@nestjs/common");
 const wechartGPT_service_1 = require("./wechartGPT.service");
 const wechartGPT_controller_1 = require("./wechartGPT.controller");
-const wechaty_module_1 = require("../wechaty/wechaty.module");
+const wechat_module_1 = require("../wechaty/wechat.module");
 let WechartGPTModule = class WechartGPTModule {
 };
 WechartGPTModule = __decorate([
     (0, common_1.Module)({
-        imports: [wechaty_module_1.WechatyModule],
+        imports: [wechat_module_1.WechatyModule],
         controllers: [wechartGPT_controller_1.WechartGPTController],
         providers: [wechartGPT_service_1.WechartGPTService]
     })

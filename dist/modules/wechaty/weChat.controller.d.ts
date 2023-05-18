@@ -4,7 +4,7 @@ import { WeChatService } from "./wechat.service";
 interface UNSUPPORTED_MESSAGE_TYPES_ENUM {
     [key: string]: string;
 }
-export declare class WeChatyController {
+export declare class WeChatController {
     private configService;
     private weChatService;
     constructor(configService: ConfigService, weChatService: WeChatService);
