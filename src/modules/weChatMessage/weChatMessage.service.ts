@@ -22,12 +22,13 @@ export class WeChatMessageService {
   WAIT_MESSAGE = `处理中 ... \n\n请稍等几秒后发送【1】查看回复`;
   NO_MESSAGE = `暂无内容，请稍后回复【1】再试`;
   CLEAR_MESSAGE = `✅ 记忆已清除`;
-  HELP_MESSAGE = `ChatGPT 指令使用指南
-  Usage:
-      1         查看上一次问题的回复
-      /clear    清除上下文
-      /help     获取更多帮助
-    `;
+  HELP_MESSAGE ="无"
+  //  `ChatGPT 指令使用指南
+  // Usage:
+  //     1         查看上一次问题的回复
+  //     /clear    清除上下文
+  //     /help     获取更多帮助
+  //   `;
 
   /* ======== 延迟 ======== */
   sleep(ms: number | undefined) {
